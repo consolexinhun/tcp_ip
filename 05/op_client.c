@@ -46,10 +46,14 @@ int main (int argc, char **argv) {
 
     for(i = 0; i < op_cnt; i++) {
         printf("oper %d:", i+1);
-        scanf("%d", (int*)&opmsg[i*OPSIZE+1]);
+        int a;
+        // scanf("%d", (int*)&opmsg[i*OPSIZE+1]);
+        scanf("%d", &a);
+        memcpy(&opmsg[i*OPSIZE+1], &a, sizeof(int));
     }
 
-    fgetc(stdin);
+    // fgetc(stdin);
+    getchar();
 
     fputs("operator:", stdout);
     scanf("%c", &opmsg[op_cnt * OPSIZE + 1]);
