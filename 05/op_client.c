@@ -51,7 +51,7 @@ int main (int argc, char **argv) {
 
     fgetc(stdin);
 
-    fputs("operator", stdout);
+    fputs("operator:", stdout);
     scanf("%c", &opmsg[op_cnt * OPSIZE + 1]);
     write(sock, opmsg, op_cnt*OPSIZE + 2);
     read(sock, &result, RLT_SIZE);
