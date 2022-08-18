@@ -41,7 +41,6 @@ int main(int argc, char **argv) {
     pid = fork();
     if (pid == 0) {  // 子进程写
         while(1) {
-            fputs("input message(Q to quit):", stdout);
             fgets(message, BUF_SIZE, stdin);
 
             if(!strcmp(message, "q\n") || !strcmp(message, "Q\n")) {
