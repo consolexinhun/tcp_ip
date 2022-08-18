@@ -64,7 +64,7 @@ int main(int argc, char **argv) {
         print_error();
     }
     else {
-        printf("connect client %d\n", receive_sock);
+        printf("connect client : %d\n", receive_sock);
     }
 
     fcntl(receive_sock, F_SETOWN, getpid());
@@ -86,7 +86,7 @@ int main(int argc, char **argv) {
 void urg_handler(int sig) {
     int str_len;
     char buf[BUF_SIZE];
-    str_len = recv(receive_sock, sizeof(buf)-1, MSG_OOB);
+    str_len = recv(receive_sock, buf, sizeof(buf)-1, MSG_OOB);
     buf[str_len] = 0;
     printf("urgent message: %s\n", buf);
 } 
