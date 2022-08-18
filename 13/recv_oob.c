@@ -82,3 +82,11 @@ int main(int argc, char **argv) {
 
     return 0;
 }
+
+void urg_handler(int sig) {
+    int str_len;
+    char buf[BUF_SIZE];
+    str_len = recv(receive_sock, sizeof(buf)-1, MSG_OOB);
+    buf[str_len] = 0;
+    printf("urgent message: %s\n", buf);
+} 
