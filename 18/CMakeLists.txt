@@ -21,6 +21,18 @@ target_link_libraries(
     pthread
 )
 
+add_executable(thread3 thread3.c)
+target_link_libraries(
+    thread3
+    pthread
+)
+
+add_executable(thread4 thread4.c)
+target_link_libraries(
+    thread4
+    pthread
+)
+
 add_executable(mutex mutex.c)
 target_link_libraries(
     mutex
