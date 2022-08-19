@@ -23,7 +23,7 @@ int main(int argc, char **argv) {
     struct epoll_event event;
     int epfd, event_cnt;
 
-    if(argc != 2) {
+    if (argc != 2) {
         printf("Usage : %s <port> \n", argv[0]);
         exit(1);
     }
@@ -34,12 +34,12 @@ int main(int argc, char **argv) {
     serv_addr.sin_port = htons(atoi(argv[1]));
     serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
-    if(bind(server_sock, (struct sockaddr*)&serv_addr, sizeof(serv_addr)) == -1) {
+    if (bind(server_sock, (struct sockaddr*)&serv_addr, sizeof(serv_addr)) == -1) {
         perror("bing() error");
         exit(1);
     }
 
-    if(listen(server_sock, 5) == -1 ) {
+    if (listen(server_sock, 5) == -1 ) {
         perror("listen() error");
         exit(1);
     }
@@ -54,14 +54,14 @@ int main(int argc, char **argv) {
     /* end */
 
 
-    while(1) {
+    while (1) {
         event_cnt = epoll_wait(epfd, ep_events, EPOLL, -1);
-        if(event_cnt == -1) {
+        if (event_cnt == -1) {
             perror("event_wait() error!");
             exit(-1);
         }
-        for(i = 0; i < event_cnt; i++) {
-            if(ep_events[i].data.fd == server_sock) {  // 如果是服务器套接字，那么需要将客户端套接字加入 epoll 例程
+        for (i = 0; i < event_cnt; i++) {
+            if (ep_events[i].data.fd == server_sock) {  // 如果是服务器套接字，那么需要将客户端套接字加入 epoll 例程
                 addr_size = sizeof(client_addr);
                 client_sock = accept(server_sock, (struct sockaddr*)&client_addr, &addr_size);
                 event.events = EPOLLIN;
@@ -69,15 +69,13 @@ int main(int argc, char **argv) {
                 epoll_ctl(epfd, EPOLL_CTL_ADD, client_sock, &event);
 
                 printf("connect client : %d\n", client_sock);
-            }
-            else {  // 如果是客户端套接字，没收到消息需要从 epoll 例程中删除套接字
+            } else {  // 如果是客户端套接字，没收到消息需要从 epoll 例程中删除套接字
                 str_len = read(ep_events[i].data.fd, buf, BUF);
-                if(str_len == 0) {  // 没收到消息
+                if (str_len == 0) {  // 没收到消息
                     epoll_ctl(epfd, EPOLL_CTL_DEL, ep_events[i].data.fd, NULL);
                     close(ep_events[i].data.fd);
                     printf("closed client : %d\n", ep_events[i].data.fd);
-                }
-                else {  // 收到消息了
+                } else {  // 收到消息了
                     write(ep_events[i].data.fd, buf, str_len);
                 }
             }
